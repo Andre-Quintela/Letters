@@ -1,6 +1,10 @@
+using Letters.Infrastructure.Context;
+using Letters.IOC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddinfrastructureDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,4 +26,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    bool canConnect = dbContext.Database.CanConnect();
+    Console.WriteLine($"Conexão com o banco: {(canConnect ? "SUCESSO" : "FALHA")}");
+}
+
 app.Run();
+
