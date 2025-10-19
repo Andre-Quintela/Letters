@@ -1,5 +1,6 @@
 ﻿using Letters.Application.DTOs;
 using Letters.Application.Interfaces;
+using Letters.Domain.Entities;
 using Letters.Domain.Interfaces;
 
 namespace Letters.Application.Services
@@ -12,9 +13,23 @@ namespace Letters.Application.Services
             this._userRepository = userRepository;
         }
 
-        public Task Add(UserDto user)
+        public Task Add(UserDto userDto)
         {
-            throw new NotImplementedException();
+            User user = new User
+            {
+                Id = Guid.NewGuid(),
+                Name = userDto.Name,
+                Email = userDto.Email,
+                PasswordHash = userDto.PasswordHash,
+                Document = userDto.Document,
+                BornDate = userDto.BornDate,
+                SchoolId = Guid.NewGuid(),
+                Grade = userDto.Grade,
+                isTeacher = false
+            };
+
+            
+            return _userRepository.Add(user);
         }
 
         public Task Delete(Guid id)

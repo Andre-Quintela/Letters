@@ -32,8 +32,9 @@ namespace Letters.API.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Task Post([FromBody] UserDto userDto)
         {
+            return _userService.Add(userDto);
         }
 
         // PUT api/<UserController>/5

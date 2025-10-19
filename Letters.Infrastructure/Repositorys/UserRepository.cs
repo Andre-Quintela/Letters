@@ -13,9 +13,11 @@ namespace Letters.Infrastructure.Repositorys
             _context = context;
         }
 
-        public Task Add(User user)
+        public async Task Add(User user)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync();
+
         }
 
         public Task Delete(Guid id)

@@ -25,9 +25,16 @@ namespace Letters.IOC
 
             //DbContext
             services.AddDbContext<Letters.Infrastructure.Context.ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
+                options.UseSqlServer(
+                    configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure
+                    (
+                        maxRetryCount: 5,           // Máximo de 5 tentativas
+                        maxRetryDelay: TimeSpan.FromSeconds(30),    // Delay máximo de 30 segundos
+                        errorNumbersToAdd: null     // Erros padrão do SQL Server
+                    )
+                    ));
             return services;
         }
-
     }
 }
