@@ -289,11 +289,6 @@ az webapp config appsettings set --resource-group rg-letters --name letters-app-
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 👨‍💻 Autor
-
-**André Quintela**
-- GitHub: [@Andre-Quintela](https://github.com/Andre-Quintela)
-
 ## 📸 Screenshots
 
 ### Tela de Login
