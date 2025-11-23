@@ -351,6 +351,8 @@ Se você encontrar algum problema ou tiver dúvidas:
 **Letters** - Transformando a correção de redações com Inteligência Artificial
 
 Feito por [André Quintela](https://github.com/Andre-Quintela)
+Feito por [Guilherme Ambrozio](https://github.com/GuilhermeAmbrozioBicaris)
+Feito por [Luis Felipe França](https://github.com/luisflipefv)
 
 [![GitHub](https://img.shields.io/badge/GitHub-Andre--Quintela-181717?style=for-the-badge&logo=github)](https://github.com/Andre-Quintela)
 
