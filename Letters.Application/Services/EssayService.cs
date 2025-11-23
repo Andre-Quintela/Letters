@@ -1,39 +1,29 @@
-using Azure.Identity;
+using Azure;
+using Azure.AI.OpenAI;
 using Letters.Application.DTOs;
 using Letters.Application.Interfaces;
 using Letters.Domain.Entities;
 using Letters.Domain.Interfaces;
-using OpenAI;
-using OpenAI.Chat;
-using System.ClientModel.Primitives;
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
-
-#pragma warning disable OPENAI001
 
 namespace Letters.Application.Services;
 
 public class EssayService : IEssayService
 {
     private readonly IEssayRepository _essayRepository;
-    private readonly ChatClient _chatClient;
+    private readonly OpenAIClient _openAIClient;
+    private readonly string _deploymentName;
 
-    public EssayService(IEssayRepository essayRepository)
+    public EssayService(IEssayRepository essayRepository, IConfiguration configuration)
     {
         _essayRepository = essayRepository;
 
-        const string endpoint = "https://lettersopenia.openai.azure.com/openai/v1";
+        var endpoint = configuration["AzureOpenAI:Endpoint"] ?? throw new Exception("AzureOpenAI:Endpoint não configurado");
+        var apiKey = configuration["AzureOpenAI:ApiKey"] ?? throw new Exception("AzureOpenAI:ApiKey não configurado");
+        _deploymentName = configuration["AzureOpenAI:DeploymentName"] ?? "gpt-5-mini";
 
-        BearerTokenPolicy tokenPolicy = new(
-            new DefaultAzureCredential(),
-            "https://cognitiveservices.azure.com/.default");
-
-        _chatClient = new ChatClient(
-            authenticationPolicy: tokenPolicy,
-            model: "gpt-5-mini",
-            options: new OpenAIClientOptions()
-            {
-                Endpoint = new Uri(endpoint),
-            });
+        _openAIClient = new OpenAIClient(new Uri(endpoint), new AzureKeyCredential(apiKey));
     }
 
     public async Task<EssayResponseDto> CreateEssayAsync(EssayRequestDto request)
@@ -119,13 +109,18 @@ Avalie esta redação seguindo os critérios do ENEM e retorne apenas o JSON com
 
         try
         {
-            ChatCompletion completion = await _chatClient.CompleteChatAsync(
-            [
-                new SystemChatMessage(systemPrompt),
-                new UserChatMessage(userPrompt)
-            ]);
+            var chatCompletionsOptions = new ChatCompletionsOptions
+            {
+                DeploymentName = _deploymentName,
+                Messages =
+                {
+                    new ChatRequestSystemMessage(systemPrompt),
+                    new ChatRequestUserMessage(userPrompt)
+                }
+            };
 
-            var responseText = completion.Content[0].Text;
+            var response = await _openAIClient.GetChatCompletionsAsync(chatCompletionsOptions);
+            var responseText = response.Value.Choices[0].Message.Content;
 
             // Remover possíveis markdown code blocks
             responseText = responseText.Replace("```json", "").Replace("```", "").Trim();
