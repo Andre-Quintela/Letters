@@ -40,7 +40,14 @@ bld/
 Letters.API/wwwroot/
 # Pasta de publicação
 publish/
+publish-linux/
 *.zip
+
+# Arquivos sensíveis
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
+*.secret.*
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
@@ -368,3 +375,4 @@ FodyWeavers.xsd
 /Letters.API/appsettings.json
 /Letters.API/appsettings.Development.json
 /publish-linux
+/SECRETS-README.md
