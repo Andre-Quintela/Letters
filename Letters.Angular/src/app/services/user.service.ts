@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface UserProfile {
   id: string;
@@ -31,7 +32,7 @@ export interface ChangePassword {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://localhost:7168/api/User';
+  private apiUrl = `${environment.apiUrl}/User`;
 
   constructor(private http: HttpClient) {}
 

@@ -38,12 +38,19 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+// Configurar arquivos estáticos (Angular)
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // Habilitar CORS
 app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Fallback para o Angular (SPA)
+app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
 {
