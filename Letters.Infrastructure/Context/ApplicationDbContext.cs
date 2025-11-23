@@ -12,5 +12,6 @@ namespace Letters.Infrastructure.Context
 
         //DbSets
         public DbSet<User> Users { get; set; }
+        public DbSet<Essay> Essays { get; set; }
     }
 }

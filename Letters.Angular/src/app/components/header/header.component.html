@@ -1,0 +1,28 @@
+<header class="app-header">
+    <p-menubar [model]="menuItems">
+        <ng-template pTemplate="start">
+            <div class="nav-brand">
+                <h1><i class="bi bi-alphabet"></i> Letters</h1>
+                <span class="subtitle">Corretor de Redação IA</span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="end">
+            <div class="user-menu">
+                <p-avatar 
+                    [label]="userName.charAt(0).toUpperCase()" 
+                    styleClass="mr-2" 
+                    size="large" 
+                    shape="circle">
+                </p-avatar>
+                <span class="user-name">{{ userName }}</span>
+                <p-button 
+                    icon="pi pi-sign-out" 
+                    (click)="logout()"
+                    [text]="true"
+                    severity="warning"
+                    label="Sair">   
+                </p-button>
+            </div>
+        </ng-template>
+    </p-menubar>
+</header>

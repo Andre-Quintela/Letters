@@ -1,0 +1,70 @@
+<div class="auth-container">
+  <p-toast></p-toast>
+  
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="bi bi-person-circle"></i>
+      <h2>Bem-vindo de volta!</h2>
+      <p>Faça login para continuar</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-field">
+        <label for="email">
+          <i class="bi bi-envelope"></i>
+          E-mail
+        </label>
+        <input 
+          pInputText 
+          id="email" 
+          formControlName="email"
+          type="email"
+          placeholder="seu@email.com"
+          [class.ng-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.dirty"
+          [class.ng-dirty]="loginForm.get('email')?.dirty" />
+        <small class="p-error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.dirty">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">E-mail é obrigatório</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">E-mail inválido</span>
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="password">
+          <i class="bi bi-lock"></i>
+          Senha
+        </label>
+        <p-password
+          id="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Digite sua senha"
+          [inputStyle]="{'width': '100%'}"
+          styleClass="w-full">
+        </p-password>
+        <small class="p-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.dirty">
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        </small>
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          type="submit"
+          label="Entrar"
+          icon="bi bi-box-arrow-in-right"
+          [loading]="loading"
+          [disabled]="loginForm.invalid"
+          styleClass="w-full p-button-lg">
+        </p-button>
+      </div>
+
+      <div class="form-footer">
+        <p>
+          Não tem uma conta?
+          <a routerLink="/register" class="link">Cadastre-se</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

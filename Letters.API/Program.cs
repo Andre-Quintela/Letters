@@ -6,6 +6,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddinfrastructureDependencies(builder.Configuration);
 
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.SetIsOriginAllowed(origin =>
+              {
+                  var uri = new Uri(origin);
+                  return uri.Host == "localhost" || uri.Host == "127.0.0.1";
+              })
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +38,9 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+// Habilitar CORS
+app.UseCors("AllowAngularApp");
+
 app.UseAuthorization();
 
 app.MapControllers();
@@ -30,7 +49,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     bool canConnect = dbContext.Database.CanConnect();
-    Console.WriteLine($"Conex�o com o banco: {(canConnect ? "SUCESSO" : "FALHA")}");
+    Console.WriteLine($"Conex�o com o banco: {(canConnect ? "SUCESSO" : "FALHA")}");
 }
 
 app.Run();

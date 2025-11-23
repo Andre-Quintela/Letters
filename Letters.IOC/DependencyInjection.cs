@@ -17,9 +17,13 @@ namespace Letters.IOC
             // services.AddScoped<IYourService, YourServiceImplementation>();
             //Services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEssayService, EssayService>();
 
             //Repositorys
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IEssayRepository, EssayRepository>();
 
 
 

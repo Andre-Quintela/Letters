@@ -10,4 +10,9 @@
     <ProjectReference Include="..\Letters.Domain\Letters.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.17.1" />
+    <PackageReference Include="OpenAI" Version="2.7.0" />
+  </ItemGroup>
+
 </Project>

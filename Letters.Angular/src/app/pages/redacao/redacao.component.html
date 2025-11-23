@@ -1,0 +1,135 @@
+<div class="redacao-container">
+  <div class="redacao-header">
+    <h1>
+      <i class="icon">✍️</i>
+      Escreva sua Redação
+    </h1>
+    <p class="subtitle">Receba correção instantânea com Inteligência Artificial</p>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Seleção de Tema -->
+    <div class="tema-section">
+      <h2>📚 Escolha um Tema</h2>
+      <div class="temas-grid">
+        <div 
+          *ngFor="let temaSugerido of temasSugeridos" 
+          class="tema-card"
+          [class.selected]="tema === temaSugerido"
+          (click)="selecionarTema(temaSugerido)">
+          <span class="tema-text">{{ temaSugerido }}</span>
+          <span class="check-icon" *ngIf="tema === temaSugerido">✓</span>
+        </div>
+      </div>
+      
+      <div class="tema-custom">
+        <input 
+          type="text" 
+          placeholder="Ou digite seu próprio tema..."
+          [(ngModel)]="tema"
+          class="tema-input">
+      </div>
+    </div>
+
+    <!-- Editor de Texto -->
+    <div class="editor-section">
+      <div class="editor-header">
+        <h2>📝 Sua Redação</h2>
+        <div class="stats">
+          <span class="stat">{{ caracterCount }} caracteres</span>
+          <span class="stat">{{ wordCount }} palavras</span>
+        </div>
+      </div>
+
+      <div class="editor-container">
+        <textarea
+          class="editor-textarea"
+          placeholder="Comece a escrever sua redação aqui... 
+
+            Dicas:
+            • Use parágrafos para organizar suas ideias
+            • Mantenha uma estrutura: introdução, desenvolvimento e conclusão
+            • Apresente argumentos claros e bem fundamentados
+            • Revise seu texto antes de enviar para correção"
+          [(ngModel)]="redacaoContent"
+          (input)="onContentChange($event)">
+        </textarea>
+      </div>
+
+      <div class="editor-actions">
+        <button 
+          class="btn btn-secondary" 
+          (click)="limparRedacao()"
+          [disabled]="isLoading">
+          🗑️ Limpar
+        </button>
+        
+        <button 
+          class="btn btn-primary" 
+          (click)="corrigirRedacao()"
+          [disabled]="isLoading || !redacaoContent.trim() || !tema">
+          <span *ngIf="!isLoading">🤖 Corrigir com IA</span>
+          <span *ngIf="isLoading" class="loading">
+            <div class="spinner"></div>
+            Corrigindo...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultado da Correção -->
+    <div class="resultado-section" *ngIf="correcaoResultado">
+      <div class="resultado-header">
+        <h2>🎯 Resultado da Correção</h2>
+        <div class="nota-badge">
+          <span class="nota-label">Nota:</span>
+          <span class="nota-valor">{{ correcaoResultado.nota }}/1000</span>
+        </div>
+      </div>
+
+      <div class="resultado-content">
+        <div class="resultado-card">
+          <h3>💬 Comentários</h3>
+          <ul class="comentarios-list">
+            <li *ngFor="let comentario of correcaoResultado.comentarios">
+              {{ comentario }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="resultado-grid">
+          <div class="resultado-card pontos-fortes">
+            <h3>✅ Pontos Fortes</h3>
+            <div class="tags">
+              <span 
+                *ngFor="let ponto of correcaoResultado.pontosFortesEncontrados" 
+                class="tag success">
+                {{ ponto }}
+              </span>
+            </div>
+          </div>
+
+          <div class="resultado-card melhorias">
+            <h3>🎯 Sugestões de Melhoria</h3>
+            <div class="tags">
+              <span 
+                *ngFor="let melhoria of correcaoResultado.melhorias" 
+                class="tag warning">
+                {{ melhoria }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="resultado-card analise-detalhada" *ngIf="correcaoResultado.analiseDetalhada">
+          <h3>📊 Análise Detalhada</h3>
+          <div class="analise-content">
+            {{ correcaoResultado.analiseDetalhada }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>

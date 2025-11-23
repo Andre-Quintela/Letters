@@ -1,0 +1,204 @@
+<div class="auth-container">
+  <p-toast></p-toast>
+  
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="bi bi-person-plus-fill"></i>
+      <h2>Criar Conta</h2>
+      <p>Preencha os dados para se cadastrar</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      
+      <!-- Nome -->
+      <div class="form-field">
+        <label for="name">
+          <i class="bi bi-person"></i>
+          Nome Completo
+        </label>
+        <input 
+          pInputText 
+          id="name" 
+          formControlName="name"
+          placeholder="Seu nome completo" />
+        <small class="p-error" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.dirty">
+          <span *ngIf="registerForm.get('name')?.errors?.['required']">Nome é obrigatório</span>
+          <span *ngIf="registerForm.get('name')?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
+        </small>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <label for="email">
+          <i class="bi bi-envelope"></i>
+          E-mail
+        </label>
+        <input 
+          pInputText 
+          id="email" 
+          formControlName="email"
+          type="email"
+          placeholder="seu@email.com" />
+        <small class="p-error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.dirty">
+          <span *ngIf="registerForm.get('email')?.errors?.['required']">E-mail é obrigatório</span>
+          <span *ngIf="registerForm.get('email')?.errors?.['email']">E-mail inválido</span>
+        </small>
+      </div>
+
+      <!-- Documento -->
+      <div class="form-field">
+        <label for="document">
+          <i class="bi bi-card-text"></i>
+          CPF
+        </label>
+        <p-inputMask
+          id="document"
+          formControlName="document"
+          mask="999.999.999-99"
+          placeholder="000.000.000-00">
+        </p-inputMask>
+        <small class="p-error" *ngIf="registerForm.get('document')?.invalid && registerForm.get('document')?.dirty">
+          <span *ngIf="registerForm.get('document')?.errors?.['required']">CPF é obrigatório</span>
+        </small>
+      </div>
+
+      <!-- Data de Nascimento -->
+      <div class="form-field">
+        <label for="bornDate">
+          <i class="bi bi-calendar"></i>
+          Data de Nascimento
+        </label>
+        <p-calendar
+          id="bornDate"
+          formControlName="bornDate"
+          [showIcon]="true"
+          dateFormat="dd/mm/yy"
+          placeholder="dd/mm/aaaa"
+          [maxDate]="maxDate"
+          [yearRange]="'1950:' + currentYear">
+        </p-calendar>
+        <small class="p-error" *ngIf="registerForm.get('bornDate')?.invalid && registerForm.get('bornDate')?.dirty">
+          <span *ngIf="registerForm.get('bornDate')?.errors?.['required']">Data de nascimento é obrigatória</span>
+        </small>
+      </div>
+
+      <!-- Tipo de Usuário -->
+      <div class="form-field">
+        <label for="isTeacher">
+          <i class="bi bi-people"></i>
+          Tipo de Usuário
+        </label>
+        <p-selectButton
+          id="isTeacher"
+          formControlName="isTeacher"
+          [options]="userTypes"
+          optionLabel="label"
+          optionValue="value">
+        </p-selectButton>
+      </div>
+
+      <!-- Série/Ano (apenas para alunos) -->
+      <div class="form-field" *ngIf="!registerForm.get('isTeacher')?.value">
+        <label for="grade">
+          <i class="bi bi-book"></i>
+          Série/Ano
+        </label>
+        <p-dropdown
+          id="grade"
+          formControlName="grade"
+          [options]="[
+            { label: '1º Ano', value: 1 },
+            { label: '2º Ano', value: 2 },
+            { label: '3º Ano', value: 3 },
+            { label: '4º Ano', value: 4 },
+            { label: '5º Ano', value: 5 },
+            { label: '6º Ano', value: 6 },
+            { label: '7º Ano', value: 7 },
+            { label: '8º Ano', value: 8 },
+            { label: '9º Ano', value: 9 },
+            { label: '1º EM', value: 10 },
+            { label: '2º EM', value: 11 },
+            { label: '3º EM', value: 12 }
+          ]"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecione a série">
+        </p-dropdown>
+        <small class="p-error" *ngIf="registerForm.get('grade')?.invalid && registerForm.get('grade')?.dirty">
+          <span *ngIf="registerForm.get('grade')?.errors?.['required']">Série é obrigatória</span>
+        </small>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-field">
+        <label for="password">
+          <i class="bi bi-lock"></i>
+          Senha
+        </label>
+        <p-password
+          id="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="true"
+          placeholder="Digite sua senha"
+          [inputStyle]="{'width': '100%'}"
+          styleClass="w-full">
+          <ng-template pTemplate="header">
+            <h6>Escolha uma senha forte</h6>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <p-divider></p-divider>
+            <p class="mt-2">Sugestões</p>
+            <ul class="pl-2 ml-2 mt-0">
+              <li>No mínimo 6 caracteres</li>
+              <li>Letras e números</li>
+            </ul>
+          </ng-template>
+        </p-password>
+        <small class="p-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.dirty">
+          <span *ngIf="registerForm.get('password')?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        </small>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="form-field">
+        <label for="confirmPassword">
+          <i class="bi bi-lock-fill"></i>
+          Confirmar Senha
+        </label>
+        <p-password
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirme sua senha"
+          [inputStyle]="{'width': '100%'}"
+          styleClass="w-full">
+        </p-password>
+        <small class="p-error" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.dirty">
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirmação de senha é obrigatória</span>
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">As senhas não conferem</span>
+        </small>
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          type="submit"
+          label="Cadastrar"
+          icon="bi bi-check-circle"
+          [loading]="loading"
+          [disabled]="registerForm.invalid"
+          styleClass="w-full p-button-lg">
+        </p-button>
+      </div>
+
+      <div class="form-footer">
+        <p>
+          Já tem uma conta?
+          <a routerLink="/login" class="link">Fazer login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
