@@ -21,6 +21,8 @@ export interface EssayResponse {
   detailedAnalysis?: string;
 }
 
+export type Essay = EssayResponse;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,5 +45,9 @@ export class EssayService {
 
   getUserEssays(userId: string): Observable<EssayResponse[]> {
     return this.http.get<EssayResponse[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  deleteEssay(essayId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${essayId}`);
   }
 }

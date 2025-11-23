@@ -1,0 +1,187 @@
+<div class="historico-container">
+  <div class="historico-header">
+    <div class="header-content">
+      <h1><i class="bi bi-clock-history"></i> Histórico de Redações</h1>
+      <p class="subtitle">Visualize e gerencie suas redações anteriores</p>
+    </div>
+    <button class="btn btn-primary" (click)="goToNewEssay()">
+      <i class="bi bi-plus-circle"></i> Nova Redação
+    </button>
+  </div>
+
+  <!-- Filtros e Busca -->
+  <div class="filters-section">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input 
+        type="text" 
+        placeholder="Buscar por tema ou conteúdo..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        class="search-input">
+    </div>
+
+    <div class="filter-buttons">
+      <button 
+        class="filter-btn"
+        [class.active]="filterOption === 'todas'"
+        (click)="filterOption = 'todas'; onFilterChange()">
+        <i class="bi bi-list-ul"></i> Todas
+      </button>
+      <button 
+        class="filter-btn"
+        [class.active]="filterOption === 'corrigidas'"
+        (click)="filterOption = 'corrigidas'; onFilterChange()">
+        <i class="bi bi-check-circle"></i> Corrigidas
+      </button>
+      <button 
+        class="filter-btn"
+        [class.active]="filterOption === 'nao-corrigidas'"
+        (click)="filterOption = 'nao-corrigidas'; onFilterChange()">
+        <i class="bi bi-clock"></i> Não Corrigidas
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Carregando redações...</p>
+  </div>
+
+  <!-- Lista de Redações -->
+  <div class="essays-grid" *ngIf="!isLoading">
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredEssays.length === 0">
+      <i class="bi bi-inbox"></i>
+      <h3>Nenhuma redação encontrada</h3>
+      <p *ngIf="searchTerm || filterOption !== 'todas'">
+        Tente ajustar os filtros ou fazer uma nova busca
+      </p>
+      <p *ngIf="!searchTerm && filterOption === 'todas'">
+        Você ainda não escreveu nenhuma redação
+      </p>
+      <button class="btn btn-primary" (click)="goToNewEssay()">
+        <i class="bi bi-pencil-square"></i> Escrever Primeira Redação
+      </button>
+    </div>
+
+    <!-- Cards de Redações -->
+    <div class="essay-card" *ngFor="let essay of filteredEssays">
+      <div class="essay-card-header">
+        <h3 class="essay-theme">{{ essay.theme }}</h3>
+        <div class="essay-date">
+          <i class="bi bi-calendar"></i>
+          {{ formatDate(essay.createdAt) }}
+        </div>
+      </div>
+
+      <div class="essay-card-body">
+        <p class="essay-preview">{{ essay.content.substring(0, 150) }}{{ essay.content.length > 150 ? '...' : '' }}</p>
+      </div>
+
+      <div class="essay-card-footer">
+        <div class="essay-status">
+          <span class="status-badge" [class.corrected]="essay.correctedAt" [class.pending]="!essay.correctedAt">
+            <i [class.bi-check-circle-fill]="essay.correctedAt" [class.bi-clock]="!essay.correctedAt"></i>
+            {{ essay.correctedAt ? 'Corrigida' : 'Aguardando correção' }}
+          </span>
+          <span class="score-badge" [ngClass]="getScoreClass(essay.score)" *ngIf="essay.score">
+            <i class="bi bi-trophy"></i>
+            {{ essay.score }}/1000
+          </span>
+        </div>
+
+        <div class="essay-actions">
+          <button class="btn-icon" (click)="viewEssay(essay)" title="Visualizar">
+            <i class="bi bi-eye"></i>
+          </button>
+          <button 
+            class="btn-icon" 
+            (click)="correctEssay(essay)" 
+            *ngIf="!essay.correctedAt"
+            title="Corrigir com IA">
+            <i class="bi bi-robot"></i>
+          </button>
+          <button class="btn-icon btn-danger" (click)="deleteEssay(essay)" title="Excluir">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Visualização -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedEssay">
+      <div class="modal-header">
+        <h2><i class="bi bi-file-text"></i> {{ selectedEssay.theme }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Informações -->
+        <div class="modal-info">
+          <div class="info-item">
+            <i class="bi bi-calendar"></i>
+            <span>Criada em: {{ formatDate(selectedEssay.createdAt) }}</span>
+          </div>
+          <div class="info-item" *ngIf="selectedEssay.correctedAt">
+            <i class="bi bi-check-circle"></i>
+            <span>Corrigida em: {{ formatDate(selectedEssay.correctedAt) }}</span>
+          </div>
+          <div class="info-item" *ngIf="selectedEssay.score">
+            <i class="bi bi-trophy"></i>
+            <span class="score-highlight" [ngClass]="getScoreClass(selectedEssay.score)">
+              Nota: {{ selectedEssay.score }}/1000
+            </span>
+          </div>
+        </div>
+
+        <!-- Conteúdo da Redação -->
+        <div class="modal-section">
+          <h3><i class="bi bi-file-text"></i> Redação</h3>
+          <div class="essay-content">{{ selectedEssay.content }}</div>
+        </div>
+
+        <!-- Correção -->
+        <div class="modal-section" *ngIf="selectedEssay.correctedAt">
+          <h3><i class="bi bi-chat-left-text"></i> Feedback Geral</h3>
+          <p class="feedback-text">{{ selectedEssay.correctionFeedback }}</p>
+
+          <div class="correction-grid">
+            <div class="correction-card" *ngIf="selectedEssay.strengths && selectedEssay.strengths.length > 0">
+              <h4><i class="bi bi-check-circle"></i> Pontos Fortes</h4>
+              <ul>
+                <li *ngFor="let strength of selectedEssay.strengths">{{ strength }}</li>
+              </ul>
+            </div>
+
+            <div class="correction-card" *ngIf="selectedEssay.improvements && selectedEssay.improvements.length > 0">
+              <h4><i class="bi bi-lightbulb"></i> Sugestões de Melhoria</h4>
+              <ul>
+                <li *ngFor="let improvement of selectedEssay.improvements">{{ improvement }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="modal-section" *ngIf="selectedEssay.detailedAnalysis">
+            <h3><i class="bi bi-graph-up"></i> Análise Detalhada</h3>
+            <p class="analysis-text">{{ selectedEssay.detailedAnalysis }}</p>
+          </div>
+        </div>
+
+        <!-- Botão de Correção se não foi corrigida -->
+        <div class="modal-actions" *ngIf="!selectedEssay.correctedAt">
+          <button class="btn btn-primary btn-large" (click)="correctEssay(selectedEssay)">
+            <i class="bi bi-robot"></i> Corrigir com IA
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>

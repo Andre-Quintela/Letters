@@ -24,6 +24,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { DividerModule } from 'primeng/divider';
+import { HistoricoRedacoesComponent } from './pages/historico-redacoes/historico-redacoes.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DividerModule } from 'primeng/divider';
     RedacaoComponent,
     HeaderComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HistoricoRedacoesComponent
   ],
   imports: [
     BrowserModule,

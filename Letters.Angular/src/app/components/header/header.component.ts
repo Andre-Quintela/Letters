@@ -35,6 +35,11 @@ export class HeaderComponent implements OnInit {
         label: 'Escrever Redação',
         icon: 'pi pi-pencil',
         command: () => this.router.navigate(['/redacao'])
+      },
+      {
+        label: 'Histórico',
+        icon: 'pi pi-history',
+        command: () => this.router.navigate(['/historico'])
       }
     ];
 
