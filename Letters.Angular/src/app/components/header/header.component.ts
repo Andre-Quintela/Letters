@@ -45,6 +45,14 @@ export class HeaderComponent implements OnInit {
 
     this.userMenuItems = [
       {
+        label: 'Meu Perfil',
+        icon: 'pi pi-user',
+        command: () => this.router.navigate(['/perfil'])
+      },
+      {
+        separator: true
+      },
+      {
         label: 'Sair',
         icon: 'pi pi-sign-out',
         command: () => this.logout()

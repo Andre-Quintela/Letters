@@ -80,14 +80,22 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  position: relative;
+}
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 50px;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  transition: all 0.3s ease;
+  border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.user-menu:hover {
+.user-menu-button:hover {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
@@ -104,6 +112,37 @@
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   font-weight: 600;
+}
+
+/* Menu Popup */
+::ng-deep .p-menu.p-menu-overlay {
+  min-width: 200px !important;
+  width: 200px !important;
+  max-width: 200px !important;
+  left: auto !important;
+  right: 0 !important;
+  transform: none !important;
+  margin-top: 0.5rem !important;
+}
+
+.user-menu ::ng-deep .p-menu {
+  min-width: 200px !important;
+  width: 200px !important;
+  max-width: 200px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.user-menu ::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.75rem 1rem !important;
+}
+
+.user-menu ::ng-deep .p-menu .p-menuitem-icon {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.user-menu ::ng-deep .p-menu .p-menuitem-text {
+  font-size: 0.95rem;
 }
 
 .user-menu ::ng-deep .p-button {

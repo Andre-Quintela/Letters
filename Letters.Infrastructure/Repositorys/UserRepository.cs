@@ -35,14 +35,15 @@ namespace Letters.Infrastructure.Repositorys
             throw new NotImplementedException();
         }
 
-        public Task<User> getById(Guid id)
+        public async Task<User> getById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("Usuário não encontrado");
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

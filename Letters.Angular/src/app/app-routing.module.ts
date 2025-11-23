@@ -5,6 +5,7 @@ import { RedacaoComponent } from './pages/redacao/redacao.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { HistoricoRedacoesComponent } from './pages/historico-redacoes/historico-redacoes.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'redacao', component: RedacaoComponent, canActivate: [AuthGuard] },
   { path: 'historico', component: HistoricoRedacoesComponent, canActivate: [AuthGuard] },
+  { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
 

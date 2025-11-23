@@ -14,14 +14,14 @@
                     size="large" 
                     shape="circle">
                 </p-avatar>
-                <span class="user-name">{{ userName }}</span>
-                <p-button 
-                    icon="pi pi-sign-out" 
-                    (click)="logout()"
-                    [text]="true"
-                    severity="warning"
-                    label="Sair">   
-                </p-button>
+                <button 
+                    type="button"
+                    class="user-menu-button"
+                    (click)="userMenu.toggle($event)">
+                    <span class="user-name">{{ userName }}</span>
+                    <i class="pi pi-chevron-down"></i>
+                </button>
+                <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
             </div>
         </ng-template>
     </p-menubar>

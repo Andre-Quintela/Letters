@@ -14,6 +14,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 
 // PrimeNG Imports
 import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
@@ -25,6 +26,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { DividerModule } from 'primeng/divider';
 import { HistoricoRedacoesComponent } from './pages/historico-redacoes/historico-redacoes.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { HistoricoRedacoesComponent } from './pages/historico-redacoes/historico
     HeaderComponent,
     LoginComponent,
     RegisterComponent,
-    HistoricoRedacoesComponent
+    HistoricoRedacoesComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import { HistoricoRedacoesComponent } from './pages/historico-redacoes/historico
     ReactiveFormsModule,
     HttpClientModule,
     MenubarModule,
+    MenuModule,
     ButtonModule,
     AvatarModule,
     InputTextModule,

@@ -1,0 +1,223 @@
+<div class="perfil-container">
+  <div class="perfil-header">
+    <h1><i class="bi bi-person-circle"></i> Meu Perfil</h1>
+    <p class="subtitle">Gerencie suas informações pessoais e configurações</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <button 
+      class="tab-btn"
+      [class.active]="activeTab === 'perfil'"
+      (click)="setActiveTab('perfil')">
+      <i class="bi bi-person"></i>
+      Dados Pessoais
+    </button>
+    <button 
+      class="tab-btn"
+      [class.active]="activeTab === 'senha'"
+      (click)="setActiveTab('senha')">
+      <i class="bi bi-lock"></i>
+      Alterar Senha
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoadingProfile">
+    <div class="spinner"></div>
+    <p>Carregando perfil...</p>
+  </div>
+
+  <!-- Tab: Dados Pessoais -->
+  <div class="tab-content" *ngIf="activeTab === 'perfil' && !isLoadingProfile">
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="form-card">
+      <h2><i class="bi bi-pencil-square"></i> Editar Informações</h2>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nome Completo *</label>
+          <input 
+            type="text" 
+            id="name"
+            formControlName="name"
+            class="form-input"
+            [class.invalid]="isFieldInvalid(profileForm, 'name')"
+            placeholder="Digite seu nome completo">
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'name')">
+            {{ getErrorMessage(profileForm, 'name') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail *</label>
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email"
+            class="form-input"
+            [class.invalid]="isFieldInvalid(profileForm, 'email')"
+            placeholder="seu.email@exemplo.com">
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'email')">
+            {{ getErrorMessage(profileForm, 'email') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="document">CPF *</label>
+          <p-inputMask 
+            id="document"
+            formControlName="document"
+            mask="999.999.999-99"
+            placeholder="000.000.000-00"
+            styleClass="form-input"
+            [ngClass]="{'invalid': isFieldInvalid(profileForm, 'document')}">
+          </p-inputMask>
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'document')">
+            {{ getErrorMessage(profileForm, 'document') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bornDate">Data de Nascimento *</label>
+          <p-calendar 
+            id="bornDate"
+            formControlName="bornDate"
+            [showIcon]="true"
+            dateFormat="dd/mm/yy"
+            placeholder="dd/mm/aaaa"
+            styleClass="form-input"
+            [ngClass]="{'invalid': isFieldInvalid(profileForm, 'bornDate')}">
+          </p-calendar>
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'bornDate')">
+            {{ getErrorMessage(profileForm, 'bornDate') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="schoolId">ID da Escola *</label>
+          <input 
+            type="text" 
+            id="schoolId"
+            formControlName="schoolId"
+            class="form-input"
+            [class.invalid]="isFieldInvalid(profileForm, 'schoolId')"
+            placeholder="ID da sua escola">
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'schoolId')">
+            {{ getErrorMessage(profileForm, 'schoolId') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="grade">Série *</label>
+          <input 
+            type="number" 
+            id="grade"
+            formControlName="grade"
+            class="form-input"
+            [class.invalid]="isFieldInvalid(profileForm, 'grade')"
+            placeholder="1 a 12"
+            min="1"
+            max="12">
+          <span class="error-message" *ngIf="isFieldInvalid(profileForm, 'grade')">
+            {{ getErrorMessage(profileForm, 'grade') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="isUpdatingProfile || profileForm.invalid">
+          <span *ngIf="!isUpdatingProfile">
+            <i class="bi bi-check-circle"></i> Salvar Alterações
+          </span>
+          <span *ngIf="isUpdatingProfile" class="loading">
+            <div class="spinner-sm"></div>
+            Salvando...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tab: Alterar Senha -->
+  <div class="tab-content" *ngIf="activeTab === 'senha' && !isLoadingProfile">
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="form-card">
+      <h2><i class="bi bi-shield-lock"></i> Alterar Senha</h2>
+      
+      <div class="form-group">
+        <label for="currentPassword">Senha Atual *</label>
+        <p-password 
+          id="currentPassword"
+          formControlName="currentPassword"
+          [feedback]="false"
+          [toggleMask]="true"
+          placeholder="Digite sua senha atual"
+          styleClass="form-input"
+          [ngClass]="{'invalid': isFieldInvalid(passwordForm, 'currentPassword')}">
+        </p-password>
+        <span class="error-message" *ngIf="isFieldInvalid(passwordForm, 'currentPassword')">
+          {{ getErrorMessage(passwordForm, 'currentPassword') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="newPassword">Nova Senha *</label>
+        <p-password 
+          id="newPassword"
+          formControlName="newPassword"
+          [feedback]="true"
+          [toggleMask]="true"
+          placeholder="Digite sua nova senha"
+          styleClass="form-input"
+          [ngClass]="{'invalid': isFieldInvalid(passwordForm, 'newPassword')}">
+        </p-password>
+        <span class="error-message" *ngIf="isFieldInvalid(passwordForm, 'newPassword')">
+          {{ getErrorMessage(passwordForm, 'newPassword') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Nova Senha *</label>
+        <p-password 
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          [feedback]="false"
+          [toggleMask]="true"
+          placeholder="Confirme sua nova senha"
+          styleClass="form-input"
+          [ngClass]="{'invalid': isFieldInvalid(passwordForm, 'confirmPassword')}">
+        </p-password>
+        <span class="error-message" *ngIf="isFieldInvalid(passwordForm, 'confirmPassword')">
+          {{ getErrorMessage(passwordForm, 'confirmPassword') }}
+        </span>
+      </div>
+
+      <div class="password-requirements">
+        <h4><i class="bi bi-info-circle"></i> Requisitos da Senha:</h4>
+        <ul>
+          <li>Mínimo de 6 caracteres</li>
+          <li>As senhas devem coincidir</li>
+        </ul>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="isChangingPassword || passwordForm.invalid">
+          <span *ngIf="!isChangingPassword">
+            <i class="bi bi-key"></i> Alterar Senha
+          </span>
+          <span *ngIf="isChangingPassword" class="loading">
+            <div class="spinner-sm"></div>
+            Alterando...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast></p-toast>

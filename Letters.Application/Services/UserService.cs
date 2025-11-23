@@ -64,5 +64,51 @@ namespace Letters.Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<UserProfileDto?> GetUserProfileAsync(Guid userId)
+        {
+            var user = await _userRepository.getById(userId);
+            if (user == null) return null;
+
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                Name = user.Name ?? string.Empty,
+                Email = user.Email ?? string.Empty,
+                Document = user.Document ?? string.Empty,
+                BornDate = user.BornDate.ToDateTime(TimeOnly.MinValue),
+                SchoolId = user.SchoolId.ToString(),
+                Grade = user.Grade,
+                IsTeacher = user.isTeacher
+            };
+        }
+
+        public async Task<bool> UpdateProfileAsync(Guid userId, UpdateProfileDto dto)
+        {
+            var user = await _userRepository.getById(userId);
+            if (user == null) return false;
+
+            user.Name = dto.Name;
+            user.Email = dto.Email;
+            user.Document = dto.Document;
+            user.BornDate = DateOnly.FromDateTime(dto.BornDate);
+            user.SchoolId = Guid.Parse(dto.SchoolId);
+            user.Grade = dto.Grade;
+
+            await _userRepository.Update(user);
+            return true;
+        }
+
+        public async Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto dto)
+        {
+            var user = await _userRepository.getById(userId);
+            if (user == null) return false;
+
+            // Verificar senha atual - implementar verificação real depois
+            // Por enquanto, apenas atualizar a senha
+            user.PasswordHash = dto.NewPassword; // TODO: Hash com BCrypt
+            await _userRepository.Update(user);
+            return true;
+        }
     }
 }

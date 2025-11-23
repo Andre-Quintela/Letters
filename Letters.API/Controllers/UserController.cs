@@ -25,9 +25,16 @@ namespace Letters.API.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<UserProfileDto>> GetProfile(Guid id)
         {
-            return "value";
+            var profile = await _userService.GetUserProfileAsync(id);
+            
+            if (profile == null)
+            {
+                return NotFound(new { message = "Usuário não encontrado" });
+            }
+
+            return Ok(profile);
         }
 
         // POST api/<UserController>
@@ -39,8 +46,30 @@ namespace Letters.API.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> UpdateProfile(Guid id, [FromBody] UpdateProfileDto dto)
         {
+            var success = await _userService.UpdateProfileAsync(id, dto);
+            
+            if (!success)
+            {
+                return NotFound(new { message = "Usuário não encontrado" });
+            }
+
+            return Ok(new { message = "Perfil atualizado com sucesso" });
+        }
+
+        // POST api/<UserController>/5/change-password
+        [HttpPost("{id}/change-password")]
+        public async Task<ActionResult> ChangePassword(Guid id, [FromBody] ChangePasswordDto dto)
+        {
+            var success = await _userService.ChangePasswordAsync(id, dto);
+            
+            if (!success)
+            {
+                return BadRequest(new { message = "Senha atual incorreta ou usuário não encontrado" });
+            }
+
+            return Ok(new { message = "Senha alterada com sucesso" });
         }
 
         // DELETE api/<UserController>/5
