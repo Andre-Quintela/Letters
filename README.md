@@ -76,10 +76,9 @@ graph TD
 ### Backend
 - **.NET 8.0** - Framework principal
 - **ASP.NET Core Web API** - Criação de APIs RESTful
-- **Azure OpenAI** - Correção inteligente de redações com GPT-4
+- **Azure OpenAI** - Correção inteligente de redações com GPT-5 mini
 - **Entity Framework Core 8.0** - ORM para acesso a dados
 - **Azure SQL Database** - Banco de dados relacional na nuvem
-- **Azure.Identity** - Autenticação e autorização Azure
 - **Clean Architecture** - Separação de responsabilidades em camadas
 
 ### Frontend
@@ -92,7 +91,6 @@ graph TD
 
 ### DevOps & Deploy
 - **Azure App Service** - Hospedagem na nuvem
-- **GitHub Actions** - CI/CD (opcional)
 - **PowerShell** - Scripts de build e deploy
 - **Azure CLI** - Gerenciamento de recursos Azure
 
