@@ -14,6 +14,15 @@
 
 </div>
 
+## 🎥 Demonstração
+
+<div align="center">
+  <a href="https://youtu.be/RH9m-NrcWZk" target="_blank">
+    <img src="https://img.youtube.com/vi/RH9m-NrcWZk/maxresdefault.jpg" alt="Demo Video" width="80%">
+  </a>
+  <p><i>Clique na imagem para assistir ao vídeo de demonstração</i></p>
+</div>
+
 ## 🎯 Sobre o Projeto
 
 **Letters** é uma aplicação web full-stack que revoluciona o processo de correção de redações através de Inteligência Artificial. Utilizando o Azure OpenAI, a plataforma oferece correções detalhadas, feedback personalizado e avaliação automatizada seguindo critérios estabelecidos.
