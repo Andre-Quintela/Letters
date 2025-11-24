@@ -10,9 +10,11 @@
 
 *Plataforma inteligente de correção de redações utilizando Azure OpenAI*
 
-[Demo](https://seu-app.azurewebsites.net) · [Reportar Bug](https://github.com/Andre-Quintela/Letters/issues) · [Solicitar Feature](https://github.com/Andre-Quintela/Letters/issues)
+[Demo](https://letterspi.azurewebsites.net/home) · [Reportar Bug](https://github.com/Andre-Quintela/Letters/issues) · [Solicitar Feature](https://github.com/Andre-Quintela/Letters/issues)
 
 </div>
+## LINK DO SITE EM PRODUÇÃO: https://letterspi.azurewebsites.net/
+
 
 ## 🎥 Demonstração
 
