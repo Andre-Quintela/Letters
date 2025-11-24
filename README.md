@@ -340,7 +340,6 @@ Consulte as [issues abertas](https://github.com/Andre-Quintela/Letters/issues) p
 Se você encontrar algum problema ou tiver dúvidas:
 - 🐛 Abra uma [issue](https://github.com/Andre-Quintela/Letters/issues)
 - 💬 Entre em contato através do GitHub
-- 📧 Email: [seu-email@exemplo.com]
 
 ## 🙏 Agradecimentos
 
